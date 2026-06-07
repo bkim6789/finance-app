@@ -1,15 +1,19 @@
-import { useState } from 'react'
+import { useState, type ChangeEvent } from 'react'
 
-function FullName({ onChange }) {
+type FullNameProps = {
+  onChange: (firstName: string, lastName: string) => void
+}
+
+function FullName({ onChange }: FullNameProps) {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
 
-  function handleFirstChange(e) {
+  function handleFirstChange(e: ChangeEvent<HTMLInputElement>) {
     setFirstName(e.target.value)
     onChange(e.target.value, lastName)
   }
 
-  function handleLastChange(e) {
+  function handleLastChange(e: ChangeEvent<HTMLInputElement>) {
     setLastName(e.target.value)
     onChange(firstName, e.target.value)
   }
