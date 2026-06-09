@@ -13,7 +13,7 @@ function App() {
   return (
     <div>
       <h1>Finance App</h1>
-      <InputTest />
+      <InputTest count={count} onUpdate={setCount} />
       {/* <TitleInput onChange={setTitle} />
       <p>{title} - {title}</p>
       <FullName onChange={(first, last) => { setFirstName(first); setLastName(last) }} />
