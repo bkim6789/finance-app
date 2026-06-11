@@ -3,6 +3,8 @@ import CounterInput from './Basics/CounterInput'
 import TitleInput from './TitleInput'
 import FullName from './FullName'
 import {InputTest} from './Basics/InputTest';
+import { Welcome } from './Basics/Welcome';
+import { TodoApp } from './Todo/TodoApp';
 
 function App() {
   const [title, setTitle] = useState('')
@@ -12,8 +14,10 @@ function App() {
 
   return (
     <div>
-      <h1>Finance App</h1>
+      <TodoApp />
+      {/* <h1>Finance App</h1>
       <InputTest count={count} onUpdate={setCount} />
+      <Welcome /> */}
       {/* <TitleInput onChange={setTitle} />
       <p>{title} - {title}</p>
       <FullName onChange={(first, last) => { setFirstName(first); setLastName(last) }} />
