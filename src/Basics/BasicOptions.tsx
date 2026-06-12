@@ -7,6 +7,12 @@ export const BasicOptions = ({filterStr, save, cancel}) => {
     setOptionFilterStr(event.target.value);
   };
 
+  const onSave = () => {
+    save({
+      filterStr: optionFilterStr,
+    });
+  };
+
   return (
     <div>
       <h3>options</h3>
@@ -20,7 +26,7 @@ export const BasicOptions = ({filterStr, save, cancel}) => {
         </input>
       </div>
       <div>
-        <button onClick={save}>save</button>
+        <button onClick={onSave}>save</button>
         <button onClick={cancel}>cancel</button>
       </div>
     </div>

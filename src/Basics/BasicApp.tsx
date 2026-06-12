@@ -9,8 +9,9 @@ export const BasicApp = () => {
     setIsOptionsOpen(true);
   };
 
-  const saveOptions = () => {
-    console.warn('@bgk save');
+  const saveOptions = (options) => {
+    console.warn('@bgk save:', options);
+    setFilterStr(options.filterStr);
     setIsOptionsOpen(false);
   };
 
