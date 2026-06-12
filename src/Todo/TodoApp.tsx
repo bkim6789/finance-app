@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import testItems from './test-items';
 import {Computed} from './Computed';
-
-interface IUser {
-  username: string;
-  password: string;
-};
+import { setUser, updateUser } from './Store/userSlice';
+import { increment, decrement, incrementByAmount } from './Store/counterSlice';
+import { RootState } from './Store/store';
 
 interface ITodoItem {
   id: string;
@@ -14,31 +13,53 @@ interface ITodoItem {
 };
 
 export const TodoApp = () => {
-  const initialUser = {username: 'bgkim', password: 'password'};
-  const [user, setUser] = useState<IUser>(initialUser);
+  const dispatch = useDispatch();
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
+  const counter = useSelector((state: RootState) => state.counter.value);
   const [todoItems, setTodoItems] = useState<ITodoItem[]>(testItems);
+
+  // Initialize user on mount
+  useEffect(() => {
+    dispatch(setUser({
+      id: '1',
+      name: 'bgkim',
+      email: 'bgkim@example.com',
+    }));
+  }, [dispatch]);
 
   const setRandomUser = () => {
     const randomShortString = Math.random().toString(36).substring(2);
-    setUser((user) => {
-      return {
-        ...user,
-        username: randomShortString,
-      };
-    });
+    if (currentUser) {
+      dispatch(updateUser({ name: randomShortString }));
+    }
   };
 
-  useEffect(() => {
-  }, []);
+  const nums = [1,2,3];
 
   return (
     <div>
       <h2>my todo app</h2>
       <div>
-        user: {user?.username} - password: {user?.password}
+        list of nums
+        <ul>
+          {
+            nums.map((num) => 
+              <li>num: {num}</li>
+            )
+          }
+        </ul>
+      </div>
+      <div>
+        user: {currentUser?.name} - email: {currentUser?.email}
       </div>
       <div>
         <button onClick={setRandomUser}>update user</button>
+      </div>
+      <div>
+        <h3>Counter: {counter}</h3>
+        <button onClick={() => dispatch(increment())}>+</button>
+        <button onClick={() => dispatch(decrement())}>-</button>
+        <button onClick={() => dispatch(incrementByAmount(5))}>+5</button>
       </div>
       <div>
         <Computed />
