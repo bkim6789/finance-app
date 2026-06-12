@@ -5,6 +5,7 @@ import FullName from './FullName'
 import {InputTest} from './Basics/InputTest';
 import { Welcome } from './Basics/Welcome';
 import { TodoApp } from './Todo/TodoApp';
+import { BasicApp } from './Basics/BasicApp';
 
 function App() {
   const [title, setTitle] = useState('')
@@ -14,7 +15,7 @@ function App() {
 
   return (
     <div>
-      <TodoApp />
+      <BasicApp />
       {/* <h1>Finance App</h1>
       <InputTest count={count} onUpdate={setCount} />
       <Welcome /> */}
