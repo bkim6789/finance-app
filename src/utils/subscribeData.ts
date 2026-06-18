@@ -9,7 +9,7 @@ export const subscribeData = ({ids, onMessage}) => {
     }, {});
 
     onMessage(idToValue);
-  }, 2500);
+  }, 5_000);
 
   return () => clearInterval(intervalId);
 }
