@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import testItems from './test-items';
 import {Computed} from './Computed';
 import { setUser, updateUser } from './Store/userSlice';
-import { increment, decrement, incrementByAmount } from './Store/counterSlice';
+import { increment, decrement, incrementByAmount, selectDoubleCounter } from './Store/counterSlice';
 import { RootState } from './Store/store';
 
 interface ITodoItem {
@@ -16,6 +16,7 @@ export const TodoApp = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const counter = useSelector((state: RootState) => state.counter.value);
+  const doubleCounter = useSelector(selectDoubleCounter);
   const [todoItems, setTodoItems] = useState<ITodoItem[]>(testItems);
 
   // Initialize user on mount
@@ -57,6 +58,7 @@ export const TodoApp = () => {
       </div>
       <div>
         <h3>Counter: {counter}</h3>
+        <h3>Double Counter: {doubleCounter}</h3>
         <button onClick={() => dispatch(increment())}>+</button>
         <button onClick={() => dispatch(decrement())}>-</button>
         <button onClick={() => dispatch(incrementByAmount(5))}>+5</button>

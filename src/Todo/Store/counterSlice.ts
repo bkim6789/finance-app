@@ -29,3 +29,6 @@ export const counterSlice = createSlice({
 
 export const { increment, decrement, incrementByAmount, reset } = counterSlice.actions
 export default counterSlice.reducer
+
+import type { RootState } from './store'
+export const selectDoubleCounter = (state: RootState) => state.counter.value * 2
