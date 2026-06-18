@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BasicOptions } from './BasicOptions';
 import { BasicTodos } from './BasicTodos';
+import { Interview } from './Interview';
+import { subscribeData } from '../utils/subscribeData';
 
 export const BasicApp = () => {
   const initialTodos = [
-    {id: 'clean', label: 'CLEAN'},
-    {id: 'study', label: 'STUDY'},
-    {id: 'lift', label: 'LIFT'},
+    {id: 'clean', label: 'clean', value: 0},
+    {id: 'study', label: 'study', value: 1},
+    {id: 'lift', label: 'lift', value: 2},
   ];
   const [todos, setTodos] = useState(initialTodos);
   const handleDeleteTodo = (id) => {
@@ -17,8 +19,29 @@ export const BasicApp = () => {
     });
   };
 
+  //filtering
   const [filterStr, setFilterStr] = useState('');
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
+  const filteredTodos = todos.filter(todo => !filterStr || todo.label.includes(filterStr));
+
+  //subscription
+  const [idToValue, setIdToValue] = useState({});
+  useEffect(() => {
+    const ids = todos.map(todo => todo.id);
+    const cancel = subscribeData({
+      ids,
+      onMessage: idToValue => {
+        setIdToValue(idToValue);
+      },
+    });
+
+    return cancel;
+  }, [todos]);
+
+  const displayTodos = filteredTodos.map(todo => {
+    todo.value = idToValue[todo.id];
+    return todo;
+  });
 
   const openOptions = () => {
     setIsOptionsOpen(true);
@@ -47,6 +70,7 @@ export const BasicApp = () => {
   return (
     <div>
       <h3>basic app</h3>
+      <Interview />
       <p>
         filter: {filterStr}, isOptionsOpen: {isOptionsOpen}
       </p>
@@ -54,7 +78,7 @@ export const BasicApp = () => {
         <button onClick={openOptions}>options</button>
       </div>
       <BasicTodos 
-        todos={todos}
+        todos={displayTodos}
         deleteTodo={handleDeleteTodo}
       />
       {options}
