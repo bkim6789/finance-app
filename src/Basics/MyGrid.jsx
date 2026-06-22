@@ -35,11 +35,11 @@ export const MyGrid = ({columns = [], rows = []}) => {
   );
 
   const rowElements = (
-    <tbody>
+    <>
       {
         rows.map(row => createRowElement(row))
       }
-    </tbody>
+    </>
   );
 
   return (
@@ -47,7 +47,9 @@ export const MyGrid = ({columns = [], rows = []}) => {
       <thead>
         {columnElements}
       </thead>
-      {rowElements}
+      <tbody>
+        {rowElements}
+      </tbody>
     </table>
   );
 }
