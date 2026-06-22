@@ -5,6 +5,7 @@ import { Interview } from './Interview';
 import { subscribeData } from '../utils/subscribeData';
 import CounterLocalState from './CounterLocalState';
 import CountDisplay from './CountDisplay';
+import { MyGrid, initialColumns, initialRows } from './MyGrid';
 
 export const BasicApp = () => {
   const initialTodos = [
@@ -69,11 +70,16 @@ export const BasicApp = () => {
       />
   );
 
+  //grid 
+  const [columns, setColumns] = useState(initialColumns);
+  const [rows, setRows] = useState(initialRows);
+
   return (
     <div>
       <h3>basic app</h3>
-      <CountDisplay />
-      <CounterLocalState />
+      <MyGrid columns={columns} rows={rows} />
+      {/* <CountDisplay />
+      <CounterLocalState /> */}
       {/* <Interview />
       <p>
         filter: {filterStr}, isOptionsOpen: {isOptionsOpen}

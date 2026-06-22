@@ -1,0 +1,8 @@
+  .tableContainer {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+.tableCell {
+    border: 1px solid black;
+}
