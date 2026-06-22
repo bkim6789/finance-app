@@ -1,28 +1,19 @@
 // local component state 
-import { useState } from 'react'
+import { useReducer } from 'react'
 import CounterInput from './CounterInput'
+import { initialState, countReducer } from '../utils/countReducer'
 
 function CounterLocalState() {
-  const [count, setCount] = useState(0)
+  const [state, dispatch] = useReducer(countReducer, initialState)
+  const count = state.count
 
   function handleCountUpdate(nextCount: number) {
-    setCount(nextCount)
-  }
-
-  function increment() {
-    setCount((c) => c + 1)
-  }
-
-  function decrement() {
-    setCount((c) => c - 1)
+    dispatch({ type: 'set', payload: nextCount })
   }
 
   return (
     <div>
-      <h2>Counter: {count}</h2>
       <CounterInput count={count} onUpdate={handleCountUpdate} />
-      <button onClick={increment}>+</button>
-      <button onClick={decrement}>-</button>
     </div>
   )
 }

@@ -3,6 +3,8 @@ import { BasicOptions } from './BasicOptions';
 import { BasicTodos } from './BasicTodos';
 import { Interview } from './Interview';
 import { subscribeData } from '../utils/subscribeData';
+import CounterLocalState from './CounterLocalState';
+import CountDisplay from './CountDisplay';
 
 export const BasicApp = () => {
   const initialTodos = [
@@ -70,7 +72,9 @@ export const BasicApp = () => {
   return (
     <div>
       <h3>basic app</h3>
-      <Interview />
+      <CountDisplay />
+      <CounterLocalState />
+      {/* <Interview />
       <p>
         filter: {filterStr}, isOptionsOpen: {isOptionsOpen}
       </p>
@@ -81,7 +85,7 @@ export const BasicApp = () => {
         todos={displayTodos}
         deleteTodo={handleDeleteTodo}
       />
-      {options}
+      {options} */}
     </div>
   );
 };
