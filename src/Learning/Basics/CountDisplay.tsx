@@ -1,5 +1,5 @@
 import { useReducer } from 'react'
-import { initialState, countReducer } from '../utils/countReducer'
+import { initialState, countReducer } from '../../utils/countReducer'
 
 function CountDisplay() {
   const [state] = useReducer(countReducer, initialState)

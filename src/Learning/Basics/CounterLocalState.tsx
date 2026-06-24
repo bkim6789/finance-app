@@ -1,7 +1,7 @@
 // local component state 
 import { useReducer } from 'react'
 import CounterInput from './CounterInput'
-import { initialState, countReducer } from '../utils/countReducer'
+import { initialState, countReducer } from '../../utils/countReducer'
 
 function CounterLocalState() {
   const [state, dispatch] = useReducer(countReducer, initialState)

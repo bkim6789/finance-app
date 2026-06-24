@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { BasicOptions } from './BasicOptions';
 import { BasicTodos } from './BasicTodos';
 import { Interview } from './Interview';
-import { subscribeData } from '../utils/subscribeData';
+import { subscribeData } from '../../utils/subscribeData';
 import CounterLocalState from './CounterLocalState';
 import CountDisplay from './CountDisplay';
 import { MyGrid, initialColumns, initialRows } from './MyGrid';
