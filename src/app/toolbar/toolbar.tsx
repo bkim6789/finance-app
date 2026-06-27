@@ -1,36 +1,67 @@
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import type { AppDispatch, RootState } from '../../store'
+import { useAppDispatch, useAppSelector } from '../hooks'
 import {
-  setIsLoggedIn,
-  setUsername,
+  clearLoginError,
+  loginUser,
+  logoutUser,
   selectFormattedUsername,
   selectUserIsAttemptingToLogIn,
   selectUserIsLoggedIn,
   selectUserLoginError,
 } from '../../shared/user/userSlice'
+import { resetTodosState } from '../../features/todos/state/todosSlice'
 
 export const Toolbar = () => {
   const [inputUsername, setInputUsername] = useState('');
+  const [inputPassword, setInputPassword] = useState('');
   const [shouldCapitalize, setShouldCapitalize] = useState(true);
-  const dispatch = useDispatch<AppDispatch>();
-  const username = useSelector((state: RootState) =>
+  const dispatch = useAppDispatch();
+  const username = useAppSelector((state) =>
     selectFormattedUsername(state, shouldCapitalize),
   );
-  const isLoggedIn = useSelector(selectUserIsLoggedIn);
-  const isAttemptingToLogIn = useSelector(selectUserIsAttemptingToLogIn);
-  const loginError = useSelector(selectUserLoginError);
+  const isLoggedIn = useAppSelector(selectUserIsLoggedIn);
+  const isAttemptingToLogIn = useAppSelector(selectUserIsAttemptingToLogIn);
+  const loginError = useAppSelector(selectUserLoginError);
 
-  const handleLogIn = () => {
-    dispatch(setUsername(inputUsername));
-  }
+  const handleLogIn = async () => {
+    await dispatch(
+      loginUser({
+        username: inputUsername,
+        password: inputPassword,
+      }),
+    );
+  };
 
-  const handleIsLoggedInChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setIsLoggedIn(event.target.checked));
+  const handleLogOut = () => {
+    dispatch(logoutUser());
+    dispatch(resetTodosState());
+    setInputPassword('');
   };
 
   const handleShouldCapitalizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setShouldCapitalize(event.target.checked);
+  };
+
+  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (loginError) {
+      dispatch(clearLoginError());
+    }
+
+    setInputUsername(event.target.value);
+  };
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (loginError) {
+      dispatch(clearLoginError());
+    }
+
+    setInputPassword(event.target.value);
+  };
+
+  const handlePasswordKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      void handleLogIn();
+    }
   };
 
   return (
@@ -39,12 +70,6 @@ export const Toolbar = () => {
       <div>isLoggedIn: {String(isLoggedIn)}</div>
       <div>isAttemptingToLogIn: {String(isAttemptingToLogIn)}</div>
       <div>error: {loginError}</div>
-
-      <div>
-        <label>
-          logged in: <input type="checkbox" checked={isLoggedIn} onChange={handleIsLoggedInChange} />
-        </label>
-      </div>
 
       <div>
         <label>
@@ -59,11 +84,26 @@ export const Toolbar = () => {
 
       <div>
         username input:{' '}
-        <input type="text" value={inputUsername} onChange={(e) => setInputUsername(e.target.value)} />
+        <input type="text" value={inputUsername} onChange={handleUsernameChange} />
       </div>
 
       <div>
-        <button onClick={handleLogIn}>Log In</button>
+        password input:{' '}
+        <input
+          type="password"
+          value={inputPassword}
+          onChange={handlePasswordChange}
+          onKeyDown={handlePasswordKeyDown}
+        />
+      </div>
+
+      <div>
+        <button onClick={handleLogIn} disabled={isAttemptingToLogIn}>
+          {isAttemptingToLogIn ? 'Logging in...' : 'Log In'}
+        </button>
+        <button onClick={handleLogOut} disabled={!isLoggedIn}>
+          Log Out
+        </button>
       </div>
     </div>
   );

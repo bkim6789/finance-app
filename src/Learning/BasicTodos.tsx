@@ -6,7 +6,7 @@ export const BasicTodos = ({todos = [] as any, deleteTodo = (id: string) => {}})
     <div>
       <ul>
         {
-          todos.map((todo) => (
+          todos.map((todo: any) => (
             <li key={todo.id}>
               {todo.label}, {todo.value}
               <button onClick={() => deleteTodo(todo.id)}>X</button>

@@ -1,12 +1,11 @@
-import { useState } from 'react'
-import { BasicApp } from './Learning/BasicApp';
 import { Toolbar } from './app/toolbar/toolbar';
+import { MainContent } from './app/main-content/main-content';
 
 function App() {
   return (
     <div>
       <Toolbar />
-      {/* <BasicApp /> */}
+      <MainContent />
     </div>
   )
 }

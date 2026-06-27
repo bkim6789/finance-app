@@ -1,16 +1,63 @@
-# React + Vite
+# Finance App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Auth-gated todos application with a local mock API.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Login with mock server credentials.
+- Error message shown when login fails.
+- Todos load only after successful login.
+- If a user has no saved todos, defaults are seeded as `a`, `b`, `c`.
+- Todo filtering by label.
+- Add new todos from the main todos UI.
+- Explicit `Save Todos` button that persists todos to the mock server.
+- Todo values update every 5 seconds.
+- Value integer base is derived from the first letter: `a = 1`, `b = 2`, ..., `z = 26`.
+- Decimal precision changes randomly (1 to 4 decimals) on each refresh tick.
 
-## React Compiler
+## Credentials
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Username: `admin`
+- Password: `password123`
 
-## Expanding the ESLint configuration
+## Run Locally
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Run both frontend and mock API:
+
+```bash
+npm run dev:all
+```
+
+Alternative in separate terminals:
+
+```bash
+npm run dev:api
+```
+
+```bash
+npm run dev
+```
+
+## API Endpoints (Mock Server)
+
+- `POST /api/v1/login`
+	- Body: `{ "username": string, "password": string }`
+- `GET /api/v1/todos?username=<username>`
+- `POST /api/v1/todos`
+	- Body: `{ "username": string, "todos": Todo[] }`
+
+The mock server stores todos in memory, scoped by username.
+
+## Scripts
+
+- `npm run dev`: Start Vite frontend.
+- `npm run dev:api`: Start local mock API server.
+- `npm run dev:all`: Start both processes concurrently.
+- `npm run build`: Build frontend.
+- `npm run lint`: Run ESLint.
