@@ -1,40 +1,35 @@
 import { useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../hooks'
-import {
-  clearLoginError,
-  loginUser,
-  logoutUser,
-  selectFormattedUsername,
-  selectUserIsAttemptingToLogIn,
-  selectUserIsLoggedIn,
-  selectUserLoginError,
-} from '../../shared/user/userSlice'
-import { resetTodosState } from '../../features/todos/state/todosSlice'
+import { useUser } from '../../context/UserContext'
+import { useTodos } from '../../context/TodosContext'
 
 export const Toolbar = () => {
   const [inputUsername, setInputUsername] = useState('');
   const [inputPassword, setInputPassword] = useState('');
   const [shouldCapitalize, setShouldCapitalize] = useState(true);
-  const dispatch = useAppDispatch();
-  const username = useAppSelector((state) =>
-    selectFormattedUsername(state, shouldCapitalize),
-  );
-  const isLoggedIn = useAppSelector(selectUserIsLoggedIn);
-  const isAttemptingToLogIn = useAppSelector(selectUserIsAttemptingToLogIn);
-  const loginError = useAppSelector(selectUserLoginError);
+  const { userData, loginUser, logoutUser, clearLoginError } = useUser();
+  const { resetTodos } = useTodos();
+
+  const username = userData.username && shouldCapitalize 
+    ? userData.username.toUpperCase() 
+    : userData.username.toLowerCase();
+  const isLoggedIn = userData.isLoggedIn;
+  const isAttemptingToLogIn = userData.authStatus === 'pending';
+  const loginError = userData.loginError;
 
   const handleLogIn = async () => {
-    await dispatch(
-      loginUser({
+    try {
+      await loginUser({
         username: inputUsername,
         password: inputPassword,
-      }),
-    );
+      });
+    } catch {
+      // Error is already set in context
+    }
   };
 
   const handleLogOut = () => {
-    dispatch(logoutUser());
-    dispatch(resetTodosState());
+    logoutUser();
+    resetTodos();
     setInputPassword('');
   };
 
@@ -44,7 +39,7 @@ export const Toolbar = () => {
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (loginError) {
-      dispatch(clearLoginError());
+      clearLoginError();
     }
 
     setInputUsername(event.target.value);
@@ -52,7 +47,7 @@ export const Toolbar = () => {
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (loginError) {
-      dispatch(clearLoginError());
+      clearLoginError();
     }
 
     setInputPassword(event.target.value);
